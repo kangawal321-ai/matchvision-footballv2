@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MatchVision Football</title>
+<style>
+:root{color-scheme:dark;--bg:#06111f;--panel:#0c1e31;--line:#1b3a50;--muted:#9bb4c7;--cyan:#49d9f5;--green:#5cf0b5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 5%,#103c52 0,transparent 28%),var(--bg);color:#f5fbff;font-family:Inter,system-ui,Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:22px clamp(18px,5vw,70px);border-bottom:1px solid var(--line);position:sticky;top:0;background:#06111feF;backdrop-filter:blur(12px);z-index:3}
+.brand{font-weight:900;letter-spacing:1px}.brand span{color:var(--cyan)}nav{display:flex;gap:20px}nav a{color:var(--muted);text-decoration:none;font-size:14px}
+main{max-width:1250px;margin:auto;padding:34px 22px 80px}.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:25px;align-items:stretch}
+.panel{background:linear-gradient(145deg,#10283d,#091a2a);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 18px 45px #0002}
+.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(36px,6vw,65px);line-height:1.02;letter-spacing:-2px;margin:16px 0}h1 span{color:var(--cyan)}p{color:var(--muted);line-height:1.65}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}button,.button{border:0;border-radius:11px;padding:12px 16px;font-weight:800;background:linear-gradient(90deg,var(--cyan),var(--green));color:#042033;cursor:pointer;text-decoration:none}
+button.secondary{background:#122f45;color:#e5f7ff;border:1px solid #2a526a}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.stat{background:#071727;border:1px solid var(--line);border-radius:13px;padding:14px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:42px 0 16px}.section-head h2{margin:0;font-size:25px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.feature{min-height:155px}.feature .symbol{font-size:23px;color:var(--cyan)}.feature h3{margin:10px 0 5px}.feature p{font-size:14px;margin:0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row input{flex:1;min-width:130px;background:#071727;border:1px solid var(--line);color:white;border-radius:10px;padding:12px}
+#output{white-space:pre-wrap;overflow:auto;max-height:450px;font-size:12px;color:#bde9f7;background:#04101c;border-radius:12px;padding:15px}
+.status{font-size:13px;color:var(--muted)}.pill{border:1px solid #286078;color:var(--green);border-radius:99px;padding:5px 9px;font-size:12px}
+footer{border-top:1px solid var(--line);padding:25px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}nav{gap:10px}nav a:nth-child(2),nav a:nth-child(3){display:none}}
+@media(max-width:520px){.grid,.stats{grid-template-columns:1fr}header{padding:17px}.panel{padding:18px}main{padding:20px 14px 55px}}
+</style>
+</head>
+<body>
+<header><div class="brand">MATCH<span>VISION</span></div><nav><a href="#fitur">Fitur</a><a href="#data">Data API</a><a href="#otomasi">Otomasi</a></nav><span class="pill">INDONESIA</span></header>
+<main>
+<section class="hero">
+  <div class="panel">
+    <div class="eyebrow">Football analytics platform</div>
+    <h1>Data bola.<br><span>Keputusan cerdas.</span></h1>
+    <p>Analisis pertandingan Liga Indonesia dalam satu dashboard. Pantau fixture, klasemen, lineup, statistik, prediksi, lalu siapkan poster hasil 4:5.</p>
+    <div class="actions"><button onclick="loadFixtures()">Lihat pertandingan</button><button class="secondary" onclick="loadStandings()">Buka klasemen</button></div>
+    <div class="stats"><div class="stat"><b>4:5</b><small>Poster sosial</small></div><div class="stat"><b>API</b><small>Data pertandingan</small></div><div class="stat"><b>Auto</b><small>Siap integrasi IG</small></div></div>
+  </div>
+  <div class="panel">
+    <div class="eyebrow">Status sistem</div><h2>Konfigurasi API</h2><p id="config">Memeriksa konfigurasi…</p>
+    <div class="actions"><button class="secondary" onclick="loadConfig()">Refresh status</button></div>
+    <p class="status">Jangan masukkan API key atau token Instagram di halaman ini. Simpan hanya di file .env pada server.</p>
+  </div>
+</section>
+<section id="fitur">
+  <div class="section-head"><div><div class="eyebrow">Tools</div><h2>Analisis pertandingan</h2></div></div>
+  <div class="grid">
+    <article class="panel feature"><div class="symbol">◉</div><h3>Skor & fixture</h3><p>Jadwal, status, skor akhir dan detail pertandingan.</p></article>
+    <article class="panel feature"><div class="symbol">↗</div><h3>Statistik pemain/tim</h3><p>Ambil statistik berdasarkan fixture dan ID tim.</p></article>
+    <article class="panel feature"><div class="symbol">♙</div><h3>Lineup 11 pemain</h3><p>Susunan pemain ketika data lineup tersedia dari provider.</p></article>
+    <article class="panel feature"><div class="symbol">▤</div><h3>Klasemen liga</h3><p>Posisi, poin, selisih gol dan performa kompetisi.</p></article>
+    <article class="panel feature"><div class="symbol">✚</div><h3>Cedera & prediksi</h3><p>Data sesuai cakupan API; prediksi bukan kepastian hasil.</p></article>
+    <article class="panel feature"><div class="symbol">▧</div><h3>Poster hasil 4:5</h3><p>Generator poster 1080×1350 untuk hasil akhir.</p></article>
+  </div>
+</section>
+<section id="data">
+  <div class="section-head"><div><div class="eyebrow">Live backend</div><h2>Ambil data Liga Indonesia</h2></div><span class="pill">Server-side API</span></div>
+  <div class="panel">
+    <div class="row"><input id="date" type="date"><button onclick="loadFixtures()">Fixture</button><button class="secondary" onclick="loadStandings()">Klasemen</button><button class="secondary" onclick="loadLeagues()">Cek ID Liga</button></div>
+    <p class="status">Untuk lineup/statistik/prediksi, gunakan ID fixture dari hasil fixture lalu panggil endpoint terkait.</p>
+    <pre id="output">Pilih salah satu aksi untuk menampilkan data API.</pre>
+  </div>
+</section>
+<section id="otomasi">
+  <div class="section-head"><div><div class="eyebrow">Workflow</div><h2>Poster & publikasi Instagram</h2></div></div>
+  <div class="panel">
+    <p>Auto-post berjalan di backend setelah pertandingan terdeteksi selesai. Sebelum mengaktifkannya, pastikan token Meta sah, akun Instagram profesional, domain HTTPS publik, dan hasil poster sudah diuji.</p>
+    <div class="row"><input id="fixtureId" placeholder="Masukkan ID fixture yang sudah selesai"><button onclick="makePoster()">Buat poster</button></div>
+    <p id="posterStatus" class="status"></p><div id="posterPreview"></div>
+    <p class="status">Posting otomatis dinonaktifkan secara default sampai konfigurasi Meta diverifikasi.</p>
+  </div>
+</section>
+</main>
+<footer>MatchVision Football · Data mengikuti ketersediaan API dan dapat berubah. Verifikasi skor, lineup, dan berita dari sumber resmi.</footer>
+<script>
+const out = document.getElementById('output');
+const today = new Date(); document.getElementById('date').value = new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+async function api(path, options){const r=await fetch(path,options);const data=await r.json();if(!r.ok)throw new Error(data.detail||data.error||'Request gagal');return data}
+function show(data){out.textContent=JSON.stringify(data,null,2)}
+async function loadConfig(){try{const c=await api('/api/config-status');document.getElementById('config').textContent=`API key: ${c.apiKeyConfigured?'siap':'belum diisi'} · ID liga: ${c.leagueConfigured?'siap':'belum dipilih'} · Instagram: ${c.instagramConfigured?'terkonfigurasi':'belum dihubungkan'} · Auto-post: ${c.autoPostEnabled?'aktif':'nonaktif'}`}catch(e){document.getElementById('config').textContent=e.message}}
+async function loadFixtures(){try{show(await api('/api/fixtures?date='+encodeURIComponent(document.getElementById('date').value)))}catch(e){show({error:e.message})}}
+async function loadStandings(){try{show(await api('/api/standings'))}catch(e){show({error:e.message})}}
+async function loadLeagues(){try{show(await api('/api/leagues?country=Indonesia'))}catch(e){show({error:e.message})}}
+async function makePoster(){const id=document.getElementById('fixtureId').value.trim();if(!id)return alert('Masukkan ID fixture.');const status=document.getElementById('posterStatus');status.textContent='Membuat poster…';try{const d=await api('/api/poster',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({fixtureId:id})});status.innerHTML=`Poster dibuat: <a style="color:#49d9f5" href="${d.posterUrl}" target="_blank" rel="noreferrer">Buka poster</a> (${d.width}×${d.height})`;document.getElementById('posterPreview').innerHTML=`<img alt="Poster hasil pertandingan" style="width:min(100%,360px);border-radius:12px;margin-top:14px" src="${d.posterUrl}">`}catch(e){status.textContent=e.message}}
+loadConfig();
+</script>
+</body></html>
